@@ -18,7 +18,7 @@ public class UsersServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         UserService userService = UserService.getInstance();
-        userService.createTable();
+       // userService.createTable();
         List<User> users = userService.getAllUsers();
         request.setAttribute("users", users);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("/list.jsp");

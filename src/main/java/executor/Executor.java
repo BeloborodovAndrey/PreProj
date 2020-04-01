@@ -31,10 +31,9 @@ public class Executor {
         }
     }
 
-    public <T> T execQueryProtected(String query, String name, ResultHandler<T> handler)
+    public <T> T execQueryProtected(String query, ResultHandler<T> handler)
             throws SQLException {
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, name);
             stmt.executeQuery();
             ResultSet result = stmt.getResultSet();
             T value = handler.handle(result);

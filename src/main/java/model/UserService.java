@@ -1,7 +1,10 @@
 package model;
 
 import dao.UserDao;
+import dao.UserHibernateDAO;
+import dao.UserJDBCDao;
 import modelEntity.User;
+import org.hibernate.SessionFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
@@ -18,14 +21,21 @@ public class UserService {
 
     private static Connection mySqlConnection;
 
+    private static SessionFactory sessionFactory;
+
     private List<User> data;
 
     /**
      * singlton realisation
      */
     private UserService() {
-        data = new ArrayList<User>();
-        mySqlConnection = createMysqlConnection();
+        try {
+            data = new ArrayList<User>();
+            //mySqlConnection = createMysqlConnection();
+            sessionFactory = HibernateConnector.getSessionFactory();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private static class DataModelHolder {
@@ -71,7 +81,8 @@ public class UserService {
     }
 
     private static UserDao getUserDAO() {
-        return new UserDao(getMySqlConnection());
+        //return new UserJDBCDao(getMySqlConnection());
+        return new UserHibernateDAO(sessionFactory.openSession());
     }
 
     public User getUserById(long id) {
@@ -92,42 +103,14 @@ public class UserService {
         }
     }
 
-    private User getUserByName(String name) {
+    private boolean validateUserById(long id, String name, String password) {
         try {
-            return getUserDAO().getUserByName(name);
+            return getUserDAO().IsUserByNameAndPassword(id, name, password);
         } catch (SQLException ex) {
             ex.printStackTrace();
-            return null;
+            return true;
         }
     }
-
-    private User getUserByName(long id, String name) {
-        try {
-            return getUserDAO().getUserByName(id, name);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
-    private User getUserByPassword(String password) {
-        try {
-            return getUserDAO().getUserByPassword(password);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
-    private User getUserByPassword(long id, String password) {
-        try {
-            return getUserDAO().getUserByPassword(id, password);
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-    }
-
 
     public List<User> getAllUsers() {
         try {
@@ -140,7 +123,7 @@ public class UserService {
     public boolean updateUser(User user) {
         UserDao dao = getUserDAO();
         try {
-            if (user == null || checkEmptyUserFields(user) || isWrongUpdateData(user.getId(), user.getName(), user.getPassword())) {
+            if (user == null || checkEmptyUserFields(user) || validateUserById(user.getId(), user.getName(), user.getPassword())) {
                 return false;
             }
             dao.UpdateUser(user);
@@ -154,7 +137,7 @@ public class UserService {
     public boolean deleteUser(User user) {
         UserDao dao = getUserDAO();
         try {
-            if (dao.getUserByName(user.getName()) != null) {
+            if (dao.getUserById(user.getId()) != null) {
                 dao.deleteUser(user);
                 return true;
             }
@@ -167,7 +150,7 @@ public class UserService {
 
     public boolean addUser(User user) {
         UserDao dao = getUserDAO();
-        if (checkEmptyUserFields(user) || isWrongInputData(user.getName(), user.getPassword())) {
+        if (checkEmptyUserFields(user) || validateInputData(user.getName(), user.getPassword())) {
             return false;
         }
         try {
@@ -182,13 +165,6 @@ public class UserService {
         }
     }
 
-    private boolean isWrongUpdateData(long id, String name, String password) {
-        return getUserByName(id, name) != null || getUserByPassword(id, password) != null;
-    }
-
-    private boolean isWrongInputData(String name, String password) {
-        return getUserByName(name) != null || getUserByPassword(password) != null;
-    }
 
     private boolean checkEmptyUserFields(User user) {
         return (user.getName().isEmpty() || user.getPassword().isEmpty());
