@@ -1,9 +1,9 @@
 package dao;
 
 import modelEntity.User;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -18,23 +18,30 @@ public class UserHibernateDAO implements UserDao {
 
     @Override
     public List<User> getAllUsers() throws SQLException {
-        List<User> users = session.createQuery("FROM User").list();
-        session.close();
-        return users;
+        try {
+            List<User> users = session.createQuery("FROM User").list();
+            session.close();
+            return users;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     @Override
     public boolean validateUser(String name, String password) throws SQLException {
+        int size;
         Query query = session.createQuery("FROM User where name = :name or password = :password");
         query.setParameter("name", name);
         query.setParameter("password", password);
+        size = query.list().size();
         session.close();
-        return query.list().size() > 0;
+        return size > 0;
     }
 
     @Override
     public User getUserById(long id) throws SQLException {
-        User user = session.get(User.class, id);
+        User user = (User) session.get(User.class, id);
         session.close();
         return user;
     }
@@ -71,7 +78,10 @@ public class UserHibernateDAO implements UserDao {
 
     @Override
     public long getMaxID() {
-        long id = ((User) session.createQuery("select max(id) FROM User").getSingleResult()).getId();
+        Long id = (Long) session.createQuery("select max(id) FROM User").uniqueResult();
+        if (id == null) {
+            id = Long.valueOf(0);
+        }
         session.close();
         return id;
     }
@@ -82,7 +92,8 @@ public class UserHibernateDAO implements UserDao {
         query.setParameter("id", id);
         query.setParameter("name", name);
         query.setParameter("password", password);
+        int size = query.list().size();
         session.close();
-        return query.list().size() > 0;
+        return size > 0;
     }
 }

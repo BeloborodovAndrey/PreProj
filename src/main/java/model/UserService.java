@@ -121,12 +121,11 @@ public class UserService {
     }
 
     public boolean updateUser(User user) {
-        UserDao dao = getUserDAO();
         try {
             if (user == null || checkEmptyUserFields(user) || validateUserById(user.getId(), user.getName(), user.getPassword())) {
                 return false;
             }
-            dao.UpdateUser(user);
+            getUserDAO().UpdateUser(user);
             return true;
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -135,10 +134,9 @@ public class UserService {
     }
 
     public boolean deleteUser(User user) {
-        UserDao dao = getUserDAO();
         try {
-            if (dao.getUserById(user.getId()) != null) {
-                dao.deleteUser(user);
+            if (getUserDAO().getUserById(user.getId()) != null) {
+                getUserDAO().deleteUser(user);
                 return true;
             }
             return false;
@@ -149,13 +147,12 @@ public class UserService {
     }
 
     public boolean addUser(User user) {
-        UserDao dao = getUserDAO();
         if (checkEmptyUserFields(user) || validateInputData(user.getName(), user.getPassword())) {
             return false;
         }
         try {
-            if (dao.getUserById(user.getId()) == null) {
-                dao.addUser(user);
+            if (getUserDAO().getUserById(user.getId()) == null) {
+                getUserDAO().addUser(user);
                 return true;
             }
             return false;
@@ -171,9 +168,8 @@ public class UserService {
     }
 
     public void clearUsers() {
-        UserDao dao = getUserDAO();
         try {
-            dao.dropTable();
+            getUserDAO().dropTable();
         } catch (SQLException e) {
             e.printStackTrace();
         }

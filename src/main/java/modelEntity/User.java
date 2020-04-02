@@ -12,7 +12,7 @@ public class User {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "name")
     private String name;
@@ -28,30 +28,34 @@ public class User {
         this.password = password;
     }
 
-    public User(long id, String name, String password) {
+    public User(Long id, String name, String password) {
         this.id = id;
         this.name = name;
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public long getId() {
-        return id;
+    public String getName() {
+        return name;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     @Override
@@ -77,5 +81,4 @@ public class User {
         result = 31 * result + (password != null ? password.hashCode() : 0);
         return result;
     }
-
 }
