@@ -27,13 +27,13 @@
             <td>${user.getName()}</td>
             <td>${user.getPassword()}</td>
             <td>
-                <form action = "updateUser.jsp" method="post">
+                <form action = "users/update" method="get">
                     <input type="hidden" name="id" value="${user.getId()}">
                     <input type="hidden" name="name" value="${user.getName()}">
                     <input type="hidden" name="password" value="${user.getPassword()}">
                     <input type="submit" value="Изменить" style="float:left">
                 </form>
-                <form action="deleteUser.jsp" method="post">
+                <form action="users/delete" method="get">
                     <input type="hidden" name="id" value="${user.getId()}">
                     <input type="submit" value="Удалить" style="float:left">
                 </form></td>
@@ -41,7 +41,7 @@
     </c:forEach>
 </table>
 
-<form action = "addUser.jsp">
+<form action = "users/register" method="get">
     <input type="submit" value="Добавить пользователя">
 </form>
 </body>

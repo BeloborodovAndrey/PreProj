@@ -15,7 +15,7 @@
     <td>ID</td>
     <td>${param.id} ?</td>
 </tr>
-<form action="users/delete" method="post">
+<form method="post">
     <input type="hidden" name="id" value="${param.id}">
     <input type="submit" value="Удалить">
 </form>

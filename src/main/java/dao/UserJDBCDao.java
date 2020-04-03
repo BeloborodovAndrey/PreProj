@@ -1,7 +1,8 @@
 package dao;
 
-import executor.Executor;
-import modelEntity.User;
+import dao.executor.Executor;
+import model.User;
+import util.DBHelper;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -15,7 +16,10 @@ public class UserJDBCDao implements UserDao {
 
     private Executor executor;
 
+    private Connection sqlConnection;
+
     public UserJDBCDao(Connection connection) {
+        sqlConnection = DBHelper.createMysqlConnection();
         this.executor = new Executor(connection);
     }
 
@@ -30,9 +34,8 @@ public class UserJDBCDao implements UserDao {
         });
     }
 
-    public boolean validateUser(String name, String password) throws SQLException {
-        return executor.execQuery("select * from users where name = '" + name +
-                "' or password = '" + password + "'", result -> result.next());
+    public boolean validateUser(String name) throws SQLException {
+        return executor.execQuery("select * from users where name = '" + name + "'", result -> result.next());
     }
 
     public User getUserById(long id) throws SQLException {
@@ -50,7 +53,7 @@ public class UserJDBCDao implements UserDao {
                 "', '" + user.getPassword() + "')");
     }
 
-    public void UpdateUser(User user) throws SQLException {
+    public void updateUser(User user) throws SQLException {
         executor.execUpdateProtected("update users set name = '" + user.getName() + "', password = '" +
                 user.getPassword() + "' where id = " + user.getId());
     }
@@ -78,9 +81,8 @@ public class UserJDBCDao implements UserDao {
     }
 
     @Override
-    public boolean IsUserByNameAndPassword(long id, String name, String password) throws SQLException {
-        return executor.execQuery("select * from users where name = '" + name +
-                "' or password = '" + password + "'", result -> {
+    public boolean validateUpdateUser(long id, String name) throws SQLException {
+        return executor.execQuery("select * from users where id != " + id +" and name = '" + name +"'", result -> {
             return result.next();
 
         });

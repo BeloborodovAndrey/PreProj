@@ -1,7 +1,6 @@
-package controller;
+package servlet;
 
-import model.UserService;
-import modelEntity.User;
+import service.UserServiceImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,10 +14,17 @@ import java.io.IOException;
 public class UsersDeleteServlet extends HttpServlet {
 
     @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("/WEB-INF/deleteUser.jsp");
+        response.setStatus(HttpServletResponse.SC_OK);
+        requestDispatcher.forward(request, response);
+    }
+
+    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        UserService userService = UserService.getInstance();
+        UserServiceImpl userServiceImpl = UserServiceImpl.getInstance();
         int id = Integer.parseInt(req.getParameter("id"));
-        userService.deleteUser(userService.getUserById(id));
+        userServiceImpl.deleteUser(userServiceImpl.getUserById(id));
         resp.setStatus(HttpServletResponse.SC_OK);
         resp.sendRedirect(req.getContextPath() + "/users");
     }

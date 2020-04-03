@@ -13,10 +13,10 @@
 
 Редактировать пользователя
 
-<form action="users/update" method="post">
+<form action="/users/update" method="post">
     <input type="hidden" name = "id" value="${param.id}">
-    <input type="text" name="name" value="${param.name}" placeholder=${param.name}>
-    <input type="text" name="password" value="${param.password}" placeholder=${param.password}>
+    Имя пользователя:<input type="text" name="name" value="${param.name}">
+    Пароль:<input type="text" name="password" value="${param.password}">
     <input type="submit" value="Обновить">
 </form>
 

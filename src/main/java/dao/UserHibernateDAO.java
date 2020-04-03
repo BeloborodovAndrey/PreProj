@@ -1,39 +1,33 @@
 package dao;
 
-import modelEntity.User;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import model.User;
+import org.hibernate.*;
+import util.DBHelper;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class UserHibernateDAO implements UserDao {
 
-    private Session session;
+    private SessionFactory sessionFactory;
 
-    public UserHibernateDAO(Session session) {
-        this.session = session;
+    public UserHibernateDAO() {
+        this.sessionFactory = DBHelper.getSessionFactory();
     }
 
     @Override
-    public List<User> getAllUsers() throws SQLException {
-        try {
+    public List<User> getAllUsers(){
+            Session session = sessionFactory.openSession();
             List<User> users = session.createQuery("FROM User").list();
             session.close();
             return users;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
-        }
     }
 
     @Override
-    public boolean validateUser(String name, String password) throws SQLException {
+    public boolean validateUser(String name) throws SQLException {
         int size;
-        Query query = session.createQuery("FROM User where name = :name or password = :password");
-        query.setParameter("name", name);
-        query.setParameter("password", password);
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("FROM User where name = " + name);
         size = query.list().size();
         session.close();
         return size > 0;
@@ -41,6 +35,7 @@ public class UserHibernateDAO implements UserDao {
 
     @Override
     public User getUserById(long id) throws SQLException {
+        Session session = sessionFactory.openSession();
         User user = (User) session.get(User.class, id);
         session.close();
         return user;
@@ -48,50 +43,52 @@ public class UserHibernateDAO implements UserDao {
 
     @Override
     public void addUser(User user) throws SQLException {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        session.save(user);
-        transaction.commit();
-        session.close();
+        try {
+            session.save(user);
+            transaction.commit();
+            session.close();
+        } catch (HibernateException ex) {
+            transaction.rollback();
+            ex.printStackTrace();
+        }
     }
 
     @Override
-    public void UpdateUser(User user) throws SQLException {
+    public void updateUser(User user) {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        session.update(user);
-        transaction.commit();
-        session.close();
+        try {
+            session.update(user);
+            transaction.commit();
+            session.close();
+        } catch (HibernateException ex) {
+            transaction.rollback();
+            ex.printStackTrace();
+        }
     }
 
     @Override
     public void deleteUser(User user) throws SQLException {
+        Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        session.delete(user);
-        transaction.commit();
-        session.close();
-    }
-
-    @Override
-    public void createTable(){};
-
-    @Override
-    public void dropTable(){};
-
-    @Override
-    public long getMaxID() {
-        Long id = (Long) session.createQuery("select max(id) FROM User").uniqueResult();
-        if (id == null) {
-            id = Long.valueOf(0);
+        try {
+            session.delete(user);
+            transaction.commit();
+            session.close();
+        } catch (HibernateException ex) {
+            transaction.rollback();
+            ex.printStackTrace();
         }
-        session.close();
-        return id;
     }
 
     @Override
-    public boolean IsUserByNameAndPassword(long id, String name, String password) {
-        Query query = session.createQuery("FROM User where id != :id and (name = :name or password = :password)");
+    public boolean validateUpdateUser(long id, String name) {
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("FROM User where id != :id and name = :name");
         query.setParameter("id", id);
         query.setParameter("name", name);
-        query.setParameter("password", password);
         int size = query.list().size();
         session.close();
         return size > 0;

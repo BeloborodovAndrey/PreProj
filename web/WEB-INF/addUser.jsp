@@ -11,9 +11,9 @@
     <title>Добавить пользователя</title>
 </head>
 <body>
-<form action = "users" method="post">
-    <input required type="text" name="name" placeholder="Имя">
-    <input required type="text" name="password" placeholder="Пароль">
+<form method="post">
+    Имя пользователя:<input required type="text" name="name">
+    Пароль:<input required type="text" name="password">
     <input type="submit" value="OK">
 </form>
 </body>
