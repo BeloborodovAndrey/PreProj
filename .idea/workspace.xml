@@ -7,12 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d8eebdcb-c718-4dad-b450-d315f6e898c7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/config.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/DaoFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/DaoFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/dao/UserJDBCDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/dao/UserJDBCDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/service/UserServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/service/UserServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/util/DBHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/util/DBHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/model/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,9 +32,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Jsp File" />
         <option value="Interface" />
         <option value="Class" />
+        <option value="Jsp File" />
       </list>
     </option>
   </component>
@@ -199,7 +195,7 @@
       <workItem from="1585826933388" duration="11968000" />
       <workItem from="1585897585077" duration="880000" />
       <workItem from="1585899093671" duration="10134000" />
-      <workItem from="1585976829918" duration="7566000" />
+      <workItem from="1585976829918" duration="8679000" />
     </task>
     <task id="LOCAL-00001" summary="First part done">
       <created>1585730484977</created>
@@ -229,7 +225,14 @@
       <option name="project" value="LOCAL" />
       <updated>1585906942111</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Реализована фабрика">
+      <created>1585990727935</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1585990727935</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -240,7 +243,8 @@
     <MESSAGE value="Second part coding done" />
     <MESSAGE value="Second part done" />
     <MESSAGE value="Произведена отладка приложения после внесенных изменений" />
-    <option name="LAST_COMMIT_MESSAGE" value="Произведена отладка приложения после внесенных изменений" />
+    <MESSAGE value="Реализована фабрика" />
+    <option name="LAST_COMMIT_MESSAGE" value="Реализована фабрика" />
   </component>
   <component name="WindowStateProjectService">
     <state x="275" y="22" key="#Assign_Data_Sources" timestamp="1585810591325">
@@ -275,10 +279,10 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="221" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1366.728@0.0.1366.728" timestamp="1585834572276" />
-    <state x="239" y="0" key="CommitChangelistDialog2" timestamp="1585906939572">
+    <state x="239" y="0" key="CommitChangelistDialog2" timestamp="1585990726488">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="239" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1585906939572" />
+    <state x="239" y="0" key="CommitChangelistDialog2/0.0.1366.728@0.0.1366.728" timestamp="1585990726488" />
     <state width="451" height="438" key="DebuggerActiveHint" timestamp="1585904804669">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
