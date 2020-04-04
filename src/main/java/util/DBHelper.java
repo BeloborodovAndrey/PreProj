@@ -23,7 +23,7 @@ public class DBHelper {
         return sessionFactory;
     }
 
-    public static Connection createMysqlConnection() {
+    public static Connection getConnection() {
         try {
             DriverManager.registerDriver((Driver) Class.forName("com.mysql.jdbc.Driver").getDeclaredConstructor().newInstance());
 
@@ -48,7 +48,7 @@ public class DBHelper {
     }
 
     @SuppressWarnings("UnusedDeclaration")
-    private static Configuration getMySqlConfiguration() {
+    private static Configuration getConfiguration() {
         Configuration configuration = new Configuration();
         configuration.addAnnotatedClass(User.class);
 
@@ -63,7 +63,7 @@ public class DBHelper {
     }
 
     private static SessionFactory createSessionFactory() {
-        Configuration configuration = getMySqlConfiguration();
+        Configuration configuration = getConfiguration();
         StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder();
         builder.applySettings(configuration.getProperties());
         ServiceRegistry serviceRegistry = builder.build();

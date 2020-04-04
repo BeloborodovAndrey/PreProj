@@ -19,7 +19,7 @@ public class UserJDBCDao implements UserDao {
     private Connection sqlConnection;
 
     public UserJDBCDao(Connection connection) {
-        sqlConnection = DBHelper.createMysqlConnection();
+        sqlConnection = DBHelper.getConnection();
         this.executor = new Executor(connection);
     }
 

@@ -1,5 +1,6 @@
 package service;
 
+import dao.DaoFactory;
 import dao.UserDao;
 import dao.UserHibernateDAO;
 import model.User;
@@ -22,7 +23,7 @@ public class UserServiceImpl implements UserService{
      */
     private UserServiceImpl() {
         try {
-            userDao = new UserHibernateDAO();
+            userDao = DaoFactory.getInstance();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
